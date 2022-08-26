@@ -1,0 +1,169 @@
+canopy:
+  enabled: true
+crs: epsg:31254
+domain: horlachtal
+end_date: 2020-11-01
+evapotranspiration:
+  enabled: true
+input_data:
+  grids:
+    dir: data/grid_wald 80p
+  meteo:
+    dir: data/meteo/
+    format: netcdf
+meteo:
+  interpolation:
+    cloudiness:
+      day_method: clear_sky_fraction
+      night_method: humidity
+    humidity:
+      extrapolate: true
+      lapse_rate:
+      - -0.0044
+      - -0.0046
+      - -0.0049
+      - -0.0048
+      - -0.0046
+      - -0.0047
+      - -0.0043
+      - -0.0042
+      - -0.0045
+      - -0.0044
+      - -0.0047
+      - -0.0046
+      trend_method: fixed
+    precipitation:
+      extrapolate: true
+      lapse_rate:
+      - 0.00048
+      - 0.00046
+      - 0.00041
+      - 0.00033
+      - 0.00028
+      - 0.00025
+      - 0.00024
+      - 0.00025
+      - 0.00028
+      - 0.00033
+      - 0.00041
+      - 0.00046
+      trend_method: fractional
+    temperature:
+      extrapolate: true
+      lapse_rate:
+      - -0.0026
+      - -0.0035
+      - -0.0047
+      - -0.0053
+      - -0.0052
+      - -0.0053
+      - -0.0049
+      - -0.0047
+      - -0.0042
+      - -0.0033
+      - -0.0035
+      - -0.0031
+      trend_method: fixed
+    wind_speed:
+      extrapolate: false
+      trend_method: regression
+  measurement_height:
+    temperature: 2
+    wind: 10
+  precipitation_correction:
+  - method: constant_scf
+    scf: 1.25
+  precipitation_phase:
+    method: wet_bulb_temp
+    temp_range: 1.0
+    threshold_temp: 273.65
+  radiation:
+    atmospheric_visibility: 25000.0
+    clear_sky_albedo: 0.0685
+    cloud_emissivity: 0.976
+    num_shadow_sweeps: 1
+    ozone_layer_thickness: 0.0035
+    rock_emission_factor: 0.01
+    single_scattering_albedo: 0.9
+    snow_emissivity: 0.99
+  stability_adjustment_parameter: 5.0
+  stability_correction: false
+output_data:
+  grids:
+    format: netcdf
+    variables:
+    - agg: mean
+      freq: M
+      name: temp_month
+      var: meteo.temp
+    - agg: sum
+      freq: M
+      name: precip_month
+      var: meteo.precip
+    - agg: mean
+      freq: M
+      name: swe_month
+      var: snow.swe
+    - agg: mean
+      freq: M
+      name: snowdepth_month
+      var: snow.depth
+    - agg: sum
+      freq: M
+      var: snow.runoff
+    - agg: sum
+      freq: M
+      var: snow.sublimation
+    - agg: sum
+      freq: M
+      var: snow.canopy_sublimation
+    - agg: sum
+      freq: M
+      name: snowmelt_month
+      var: snow.melt
+    - agg: sum
+      freq: M
+      var: evapotranspiration.evapotranspiration
+resolution: 100
+results_dir: results/wald 80p
+snow:
+  albedo:
+    cold_snow_decay_timescale: 480
+    decay_timescale_determination_temperature: surface
+    firn: 0.4
+    ice: 0.2
+    max: 0.85
+    melting_snow_decay_timescale: 200
+    method: snow_age
+    min: 0.55
+    refresh_method: binary
+    refresh_snowfall: 0.5
+  compaction:
+    max_cold_density: 300
+    max_melting_density: 500
+    method: anderson
+    timescale: 200
+  cryolayers:
+    cold_holding_capacity: 0.05
+    refreezing_factor: 1.0
+    surface_heat_flux: -2.0
+    transition:
+      firn: 10
+      ice: 900.0
+      old_snow: 200.0
+  liquid_water_content:
+    max: 0.03
+    method: pore_volume_fraction
+  measurement_height_adjustment: false
+  melt:
+    albedo_factor: 0.1
+    degree_day_factor: 1.2
+    method: energy_balance
+    threshold_temp: 273.15
+  model: multilayer
+  roughness_length: 0.01
+  snow_cover_fraction_depth_scale: 1.0e-06
+  thermal_conductivity: 0.24
+start_date: 2019-09-01
+timestep: D
+timezone: 1
